@@ -1,5 +1,7 @@
 const express = require('express');
 const hbs = require('nodemailer-express-handlebars');
+var app = express();
+
 const nodemailer = require('nodemailer');
 const path = require('path');
 const crypto = require('crypto');
@@ -17,14 +19,24 @@ const smtpTransport = nodemailer.createTransport({
     pass: pass
   }
 });
-
+/*
 const handlebarsOptions = {
-  viewEngine: 'handlebars',
-  viewPath: path.resolve('./templates/'),
+  viewEngine: "handlebars",
+  partialsDir: "./templates/",
+  viewPath: path.resolve("./templates/"),
   extName: '.html'
 };
+*/
+app.engine( 'hbs', hbs( { 
+  extname: 'hbs', 
+  layoutsDir: '/templates/',
+  partialsDir: '/templates/'
+} ) );
 
-smtpTransport.use('compile', hbs(handlebarsOptions));
+app.set('view engine','hbs' );
+
+//smtpTransport.use('compile', hbs(handlebarsOptions));
+smtpTransport.use();
 
 const router = express.Router();
 
